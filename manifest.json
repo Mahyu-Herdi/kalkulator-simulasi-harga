@@ -1,0 +1,21 @@
+{
+  "name": "Kalkulator PO Margin",
+  "short_name": "KalkulatorPO",
+  "description": "Aplikasi hitung margin PO SPPG, Koperasi, dan Supplier",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#0a84ff",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1011/1011863.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/1011/1011863.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

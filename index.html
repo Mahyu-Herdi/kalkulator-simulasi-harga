@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0a84ff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Sistem PO Mahyu</title>
+  
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/1011/1011863.png"> 
+
+  <style>
+    :root {
+      --bg-color: #000000; 
+      --text-main: #ffffff; 
+      --text-secondary: rgba(235, 235, 245, 0.6); 
+      --ios-blue: #0a84ff; 
+      --ios-green: #30d158; 
+      --ios-red: #ff453a; 
+      --glass-bg: rgba(28, 28, 30, 0.5); 
+      --glass-border: rgba(255, 255, 255, 0.08); 
+    } 
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent; 
+    } 
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(10, 132, 255, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(48, 209, 88, 0.08) 0px, transparent 50%);
+      color: var(--text-main);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    } 
+
+    .container {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 20px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid var(--glass-border);
+      border-radius: 28px; 
+      padding: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+      position: relative;
+      isolation: isolate; 
+    } 
+
+    h2 {
+      text-align: center;
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 24px;
+      letter-spacing: -0.5px;
+    } 
+
+    .tab-container {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      margin-bottom: 24px;
+      padding: 4px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      color: var(--text-secondary);
+      margin-top: 0;
+      padding: 10px 8px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: none;
+      white-space: nowrap;
+      border: none;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      font-weight: 600;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .view-section {
+      display: none;
+    }
+
+    .view-section.active {
+      display: block;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    } 
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      margin-left: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    } 
+
+    input {
+      width: 100%;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid transparent;
+      border-radius: 14px;
+      font-size: 17px; 
+      outline: none;
+      transition: all 0.2s;
+    } 
+
+    input:focus {
+      border-color: var(--ios-blue);
+      background: rgba(255, 255, 255, 0.1);
+    } 
+
+    button.action-btn {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      padding: 16px;
+      margin-top: 10px;
+      background-color: var(--ios-blue);
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(10, 132, 255, 0.3);
+    } 
+
+    button.action-btn:active {
+      opacity: 0.8;
+      transform: scale(0.98);
+    } 
+
+    .result {
+      margin-top: 28px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      display: none; 
+    } 
+
+    .result-item {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+    } 
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    } 
+
+    .result-persen {
+      font-weight: 600;
+      background: rgba(255,255,255, 0.1);
+      padding: 2px 8px;
+      border-radius: 6px;
+      color: var(--text-main);
+    } 
+
+    .result-value {
+      font-weight: 700;
+      font-size: 20px;
+    } 
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animate-show {
+      animation: fadeIn 0.4s ease-out forwards;
+    }
+  </style>
+</head>
+<body> 
+
+<div class="container">
+  <h2>Sistem Harga</h2> 
+
+  <div class="tab-container">
+    <button class="tab-btn active" id="btn-tab-po" onclick="switchTab('po')">Hitung PO</button>
+    <button class="tab-btn" id="btn-tab-simulasi" onclick="switchTab('simulasi')">Simulasi SPPG</button>
+    <button class="tab-btn" id="btn-tab-mundur" onclick="switchTab('mundur')">Hitung Mundur</button>
+  </div>
+
+  <div id="view-po" class="view-section active">
+    <div class="form-group">
+      <label>PO SPPG</label>
+      <input type="text" id="sppg" placeholder="Rp 0" inputmode="numeric" oninput="formatRupiah(this)">
+    </div> 
+
+    <div class="form-group">
+      <label>PO Koperasi</label>
+      <input type="text" id="koperasi" placeholder="Rp 0" inputmode="numeric" oninput="formatRupiah(this)">
+    </div> 
+
+    <div class="form-group">
+      <label>PO Supplier</label>
+      <input type="text" id="supplier" placeholder="Rp 0" inputmode="numeric" oninput="formatRupiah(this)">
+    </div> 
+
+    <button class="action-btn" onclick="hitung()">Hitung Margin</button> 
+  </div>
+
+  <div id="view-simulasi" class="view-section">
+    <div class="form-group">
+      <label>Harga Pasar</label>
+      <input type="text" id="hargaPasar" placeholder="Rp 0" inputmode="numeric" oninput="formatRupiah(this)">
+    </div>
+    
+    <button class="action-btn" onclick="simulasiHarga()">Simulasi Harga Final</button>
+  </div>
+
+  <div id="view-mundur" class="view-section">
+    <div class="form-group">
+      <label>Harga SPPG Final</label>
+      <input type="text" id="inputSppgMundur" placeholder="Rp 0" inputmode="numeric" oninput="formatRupiah(this)">
+    </div>
+    
+    <button class="action-btn" onclick="hitungMundur()">Bongkar Harga</button>
+  </div>
+
+  <div class="result" id="output"></div>
+</div> 
+
+<script>
+function switchTab(tab) {
+  document.getElementById('btn-tab-po').classList.remove('active');
+  document.getElementById('btn-tab-simulasi').classList.remove('active');
+  document.getElementById('btn-tab-mundur').classList.remove('active');
+  
+  document.getElementById('view-po').classList.remove('active');
+  document.getElementById('view-simulasi').classList.remove('active');
+  document.getElementById('view-mundur').classList.remove('active');
+
+  document.getElementById('btn-tab-' + tab).classList.add('active');
+  document.getElementById('view-' + tab).classList.add('active');
+
+  document.getElementById('output').style.display = 'none';
+}
+
+function formatRupiah(input) {
+  let angka = input.value.replace(/[^0-9]/g, '');
+  if (!angka) {
+    input.value = '';
+    return;
+  }
+  let formatted = new Intl.NumberFormat('id-ID').format(angka);
+  input.value = 'Rp ' + formatted;
+} 
+
+const formatRpFinal = (angka) => {
+  return new Intl.NumberFormat('id-ID', { 
+    style: 'currency', 
+    currency: 'IDR',
+    maximumFractionDigits: 0
+  }).format(angka);
+}; 
+
+function getAngkaAsli(id) {
+  let nilai = document.getElementById(id).value;
+  let angka = nilai.replace(/[^0-9]/g, '');
+  return parseFloat(angka) || 0;
+} 
+
+function tampilkanError(pesan) {
+  let outputDiv = document.getElementById('output');
+  outputDiv.style.display = 'block';
+  outputDiv.className = 'result animate-show';
+  outputDiv.innerHTML = `<div style='text-align:center; color: var(--ios-red); font-weight:600;'>${pesan}</div>`;
+}
+
+// 1. Fungsi Hitung PO
+function hitung(){
+  let sppg = getAngkaAsli('sppg');
+  let koperasi = getAngkaAsli('koperasi');
+  let supplier = getAngkaAsli('supplier');
+  let outputDiv = document.getElementById('output'); 
+
+  if(sppg === 0 || koperasi === 0 || supplier === 0){
+    tampilkanError('Lengkapi semua nominal terlebih dahulu.');
+    return;
+  } 
+
+  let nomLabaKoperasi = sppg - koperasi;  
+  let nomLabaYayasan = koperasi - supplier; 
+  let nomTotalMargin = sppg - supplier;     
+
+  let persenKoperasi = (nomLabaKoperasi / sppg) * 100;
+  let persenYayasan = (nomLabaYayasan / sppg) * 100;
+  let persenTotal = (nomTotalMargin / sppg) * 100; 
+
+  outputDiv.style.display = 'block';
+  outputDiv.className = 'result animate-show'; 
+
+  outputDiv.innerHTML = `
+    <div class="result-item">
+      <div class="result-header">
+        <span>Laba Koperasi (SPPG - Kop)</span>
+        <span class="result-persen">${persenKoperasi.toFixed(2)}%</span>
+      </div>
+      <div class="result-value">${formatRpFinal(nomLabaKoperasi)}</div>
+    </div> 
+
+    <div class="result-item">
+      <div class="result-header">
+        <span>Laba Yayasan (Kop - Sup)</span>
+        <span class="result-persen">${persenYayasan.toFixed(2)}%</span>
+      </div>
+      <div class="result-value">${formatRpFinal(nomLabaYayasan)}</div>
+    </div> 
+
+    <div class="result-item" style="border-bottom:none;">
+      <div class="result-header">
+        <span style="color: var(--ios-green); font-weight: 700;">Total Margin (SPPG - Sup)</span>
+        <span class="result-persen" style="background: rgba(48, 209, 88, 0.2); color: var(--ios-green);">${persenTotal.toFixed(2)}%</span>
+      </div>
+      <div class="result-value" style="color: var(--ios-green);">${formatRpFinal(nomTotalMargin)}</div>
+    </div>
+  `;
+} 
+
+// 2. Fungsi Simulasi Harga Baru
+function simulasiHarga(){
+  let pasar = getAngkaAsli('hargaPasar');
+  let outputDiv = document.getElementById('output');
+
+  if(pasar === 0){
+    tampilkanError('Masukkan Harga Pasar terlebih dahulu.');
+    return;
+  }
+
+  // PO Supplier dibulatkan normal
+  let labaSupplierTeoritis = pasar * 0.03;
+  let poSupplier = Math.round((pasar + labaSupplierTeoritis) / 100) * 100;
+  let labaSupplier = poSupplier - pasar;
+
+  // Tarik harga SPPG ke atas
+  let sppgTeoritis = poSupplier / 0.9;
+  let sppgFinal = Math.ceil(sppgTeoritis / 100) * 100;
+
+  // Kunci batas maksimal PO Koperasi (92% dari SPPG) lalu dibulatkan ke bawah
+  // Ini mengamankan Laba Koperasi minimal 8%
+  let poKoperasi = Math.floor((sppgFinal * 0.92) / 100) * 100;
+
+  let labaYayasan = poKoperasi - poSupplier;
+  let labaKoperasi = sppgFinal - poKoperasi;
+
+  let persenSupplier = (labaSupplier / pasar) * 100;
+  let persenYayasan = (labaYayasan / sppgFinal) * 100;
+  let persenKoperasi = (labaKoperasi / sppgFinal) * 100;
+
+  outputDiv.style.display = 'block';
+  outputDiv.className = 'result animate-show';
+
+  outputDiv.innerHTML = `
+    <div style="text-align:center; margin-bottom:18px; color:var(--ios-blue);">
+      <div style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Target Harga SPPG</div>
+      <div style="font-weight:800; font-size:28px;">${formatRpFinal(sppgFinal)}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-header"><span>Harga Pasar Awal</span></div>
+      <div class="result-value" style="font-size:16px;">${formatRpFinal(pasar)}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-header">
+        <span>Laba Supplier</span>
+        <span class="result-persen">${persenSupplier.toFixed(2)}%</span>
+      </div>
+      <div class="result-value" style="font-size:16px;">${formatRpFinal(labaSupplier)}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-header">
+        <span>Laba Yayasan</span>
+        <span class="result-persen">${persenYayasan.toFixed(2)}%</span>
+      </div>
+      <div class="result-value" style="font-size:16px;">${formatRpFinal(labaYayasan)}</div>
+    </div>
+    <div class="result-item">
+      <div class="result-header">
+        <span>Laba Koperasi</span>
+        <span class="result-persen" style="color:var(--ios-blue); background:rgba(10,132,255,0.1);">${persenKoperasi.toFixed(2)}%</span>
+      </div>
+      <div class="result-value" style="font-size:16px;">${formatRpFinal(labaKoperasi)}</div>
+    </div>
+    <div class="result-item" style="border-bottom:none; background: rgba(10, 132, 255, 0.1); padding: 14px; border-radius: 12px; margin-top: 10px;">
+      <div style="font-size: 13px; font-weight: 600; color: var(--ios-blue); margin-bottom: 10px; text-transform: uppercase;">Copy untuk Input PO:</div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+        <span style="font-size: 14px;">PO Supplier</span>
+        <span style="font-weight:700;">${formatRpFinal(poSupplier)}</span>
+      </div>
+      <div style="display:flex; justify-content:space-between;">
+        <span style="font-size: 14px;">PO Koperasi</span>
+        <span style="font-weight:700;">${formatRpFinal(poKoperasi)}</span>
+      </div>
+    </div>
+  `;
+}
+
+// 3. Fungsi Hitung Mundur dari SPPG
+function hitungMundur() {
+  let sppg = getAngkaAsli('inputSppgMundur');
+  let outputDiv = document.getElementById('output');
+
+  if(sppg === 0) {
+    tampilkanError('Masukkan Harga SPPG terlebih dahulu.');
+    return;
+  }
+
+  let poSupplier = Math.round((sppg * 0.9) / 100) * 100;
+  let hargaPasar = Math.round((poSupplier / 1.03) / 100) * 100;
+  let labaSupplier = poSupplier - hargaPasar;
+
+  // Kunci batas maksimal PO Koperasi (92% dari SPPG) lalu dibulatkan ke bawah
+  let poKoperasi = Math.floor((sppg * 0.92) / 100) * 100;
+
+  let labaYayasan = poKoperasi - poSupplier;
+  let labaKoperasi = sppg - poKoperasi;
+
+  let persenSupplier = (labaSupplier / hargaPasar) * 100;
+  let persenYayasan = (labaYayasan / sppg) * 100;
+  let persenKoperasi = (labaKoperasi / sppg) * 100;
+
+  outputDiv.style.display = 'block';
+  outputDiv.className = 'result animate-show';
+
+  outputDiv.innerHTML = `
+    <div style="text-align:center; margin-bottom:18px; color:var(--ios-blue);">
+      <div style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Harga SPPG Final</div>
+      <div style="font-weight:800; font-size:28px;">${formatRpFinal(sppg)}</div>
+    </div>
+    
+    <div class="result-item">
+      <div class="result-header"><span>Estimasi Harga Pasar</span></div>
+      <div class="result-value" style="font-size:16px;">${formatRpFinal(hargaPasar)}</div>
+    </div>
+    
+    <div class="result-item">
+      <div class="result-header">
+        <span>Laba Supplier</span>
+        <span class="result-persen">${persenSupplier.toFixed(2)}%</span>
+      </div>
+      <div class="result-value" style="font-size:16px;">${formatRpFinal(labaSupplier)}</div>
+    </div>
+    
+    <div class="result-item">
+      <div class="result-header">
+        <span>Laba Yayasan</span>
+        <span class="result-persen">${persenYayasan.toFixed(2)}%</span>
+      </div>
+      <div class="result-value" style="font-size:16px;">${formatRpFinal(labaYayasan)}</div>
+    </div>
+    
+    <div class="result-item">
+      <div class="result-header">
+        <span>Laba Koperasi</span>
+        <span class="result-persen" style="color:var(--ios-blue); background:rgba(10,132,255,0.1);">${persenKoperasi.toFixed(2)}%</span>
+      </div>
+      <div class="result-value" style="font-size:16px;">${formatRpFinal(labaKoperasi)}</div>
+    </div>
+    
+    <div class="result-item" style="border-bottom:none; background: rgba(10, 132, 255, 0.1); padding: 14px; border-radius: 12px; margin-top: 10px;">
+      <div style="font-size: 13px; font-weight: 600; color: var(--ios-blue); margin-bottom: 10px; text-transform: uppercase;">Copy untuk Input PO:</div>
+      <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+        <span style="font-size: 14px;">PO Supplier</span>
+        <span style="font-weight:700;">${formatRpFinal(poSupplier)}</span>
+      </div>
+      <div style="display:flex; justify-content:space-between;">
+        <span style="font-size: 14px;">PO Koperasi</span>
+        <span style="font-weight:700;">${formatRpFinal(poKoperasi)}</span>
+      </div>
+    </div>
+  `;
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .catch(err => console.log('SW Gagal', err));
+  });
+}
+</script> 
+
+</body>
+</html>
