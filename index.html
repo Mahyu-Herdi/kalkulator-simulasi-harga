@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#e0e5ec">
+  <meta name="theme-color" content="#2b2e33">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Sistem PO Mahyu</title>
   
   <link rel="manifest" href="manifest.json">
@@ -13,23 +13,23 @@
 
   <style>
     :root {
-      /* Palette Terang Neumorphism */
-      --bg-color: #e0e5ec; 
-      --text-main: #2d3436; 
-      --text-secondary: #636e72; 
+      /* Palette Semi-Dark Neumorphism */
+      --bg-color: #2b2e33; 
+      --text-main: #e2e8f0; 
+      --text-secondary: #94a3b8; 
       
-      /* Warna Aksen disesuaikan untuk background terang */
-      --ios-blue: #0984e3; 
-      --ios-green: #00b894; 
-      --ios-red: #d63031; 
+      /* Warna Aksen - disesuaikan agar sedikit lebih soft di dark mode */
+      --ios-blue: #3b82f6; 
+      --ios-green: #10b981; 
+      --ios-red: #ef4444; 
       
-      /* Shadow Neumorphism */
-      --shadow-light: rgba(255, 255, 255, 0.9);
-      --shadow-dark: rgba(163, 177, 198, 0.5);
+      /* Shadow Neumorphism Semi-Dark */
+      --shadow-light: rgba(255, 255, 255, 0.05);
+      --shadow-dark: rgba(0, 0, 0, 0.4);
       
       /* Glassmorphism */
-      --glass-bg: rgba(224, 229, 236, 0.4); 
-      --glass-border: rgba(255, 255, 255, 0.7); 
+      --glass-bg: rgba(43, 46, 51, 0.5); 
+      --glass-border: rgba(255, 255, 255, 0.05); 
     } 
 
     * {
@@ -40,10 +40,10 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-color);
-      /* Gradient soft di background untuk menonjolkan efek kaca */
+      /* Gradient soft untuk efek neon tipis dari belakang */
       background-image: 
-        radial-gradient(at 10% 10%, rgba(9, 132, 227, 0.15) 0px, transparent 40%),
-        radial-gradient(at 90% 90%, rgba(0, 184, 148, 0.15) 0px, transparent 40%);
+        radial-gradient(at 10% 10%, rgba(59, 130, 246, 0.08) 0px, transparent 40%),
+        radial-gradient(at 90% 90%, rgba(16, 185, 129, 0.08) 0px, transparent 40%);
       color: var(--text-main);
       margin: 0;
       padding: 20px;
@@ -62,9 +62,9 @@
       border: 1px solid var(--glass-border);
       border-radius: 28px; 
       padding: 24px;
-      /* Gabungan shadow Neumorphism (luar) */
-      box-shadow: 12px 12px 24px var(--shadow-dark), 
-                 -12px -12px 24px var(--shadow-light);
+      /* Shadow luar untuk efek timbul */
+      box-shadow: 10px 10px 20px var(--shadow-dark), 
+                 -10px -10px 20px var(--shadow-light);
       position: relative;
       isolation: isolate; 
     } 
@@ -81,12 +81,12 @@
 
     .tab-container {
       display: flex;
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(0, 0, 0, 0.15);
       border-radius: 14px;
       margin-bottom: 24px;
       padding: 4px;
       overflow-x: auto;
-      /* Efek cekung (inset) pada container tab */
+      /* Efek cekung (inset) */
       box-shadow: inset 3px 3px 6px var(--shadow-dark),
                   inset -3px -3px 6px var(--shadow-light);
     }
@@ -143,9 +143,9 @@
     input {
       width: 100%;
       padding: 16px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.1);
       color: var(--text-main);
-      border: 1px solid var(--glass-border);
+      border: 1px solid transparent;
       border-radius: 14px;
       font-size: 17px; 
       outline: none;
@@ -156,8 +156,8 @@
     } 
 
     input:focus {
-      border-color: var(--ios-blue);
-      background: rgba(255, 255, 255, 0.4);
+      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(0, 0, 0, 0.2);
     } 
 
     button.action-btn {
@@ -174,7 +174,7 @@
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
-      /* Efek cembung dominan untuk tombol utama */
+      /* Efek cembung dominan untuk tombol */
       box-shadow: 6px 6px 12px var(--shadow-dark), 
                  -6px -6px 12px var(--shadow-light);
     } 
@@ -190,7 +190,7 @@
     .result {
       margin-top: 28px;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.3);
+      background: rgba(0, 0, 0, 0.15);
       border-radius: 18px;
       border: 1px solid var(--glass-border);
       display: none; 
@@ -202,7 +202,7 @@
     .result-item {
       display: flex;
       flex-direction: column;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       padding-bottom: 14px;
       margin-bottom: 14px;
     } 
@@ -218,7 +218,7 @@
 
     .result-persen {
       font-weight: 600;
-      background: rgba(0, 0, 0, 0.05);
+      background: rgba(0, 0, 0, 0.2);
       padding: 2px 8px;
       border-radius: 6px;
       color: var(--text-main);
