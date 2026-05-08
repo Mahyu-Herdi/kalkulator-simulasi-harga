@@ -13,23 +13,24 @@
 
   <style>
     :root {
-      /* Palette Semi-Dark Neumorphism */
+      /* Palette Semi-Dark */
       --bg-color: #2b2e33; 
       --text-main: #e2e8f0; 
       --text-secondary: #94a3b8; 
       
-      /* Warna Aksen - disesuaikan agar sedikit lebih soft di dark mode */
       --ios-blue: #3b82f6; 
       --ios-green: #10b981; 
       --ios-red: #ef4444; 
       
-      /* Shadow Neumorphism Semi-Dark */
-      --shadow-light: rgba(255, 255, 255, 0.05);
-      --shadow-dark: rgba(0, 0, 0, 0.4);
+      /* Clay & Neumorphism Shadows */
+      --shadow-light: rgba(255, 255, 255, 0.04);
+      --shadow-dark: rgba(0, 0, 0, 0.5);
+      --clay-glow: rgba(255, 255, 255, 0.06);
+      --clay-inner: rgba(0, 0, 0, 0.3);
       
       /* Glassmorphism */
-      --glass-bg: rgba(43, 46, 51, 0.5); 
-      --glass-border: rgba(255, 255, 255, 0.05); 
+      --glass-bg: rgba(43, 46, 51, 0.65); 
+      --glass-border: rgba(255, 255, 255, 0.03); 
     } 
 
     * {
@@ -40,31 +41,34 @@
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background-color: var(--bg-color);
-      /* Gradient soft untuk efek neon tipis dari belakang */
       background-image: 
         radial-gradient(at 10% 10%, rgba(59, 130, 246, 0.08) 0px, transparent 40%),
         radial-gradient(at 90% 90%, rgba(16, 185, 129, 0.08) 0px, transparent 40%);
       color: var(--text-main);
       margin: 0;
-      padding: 20px;
+      padding: 10px 20px; /* Dipersempit agar tidak mentok */
       display: flex;
       justify-content: center;
       min-height: 100vh;
+      align-items: center; /* Membantu di layar besar agar ke tengah */
     } 
 
     .container {
       width: 100%;
       max-width: 400px;
-      margin-top: 20px;
+      margin-top: 10px;
       background: var(--glass-bg);
-      backdrop-filter: blur(16px) saturate(120%);
-      -webkit-backdrop-filter: blur(16px) saturate(120%);
+      backdrop-filter: blur(20px) saturate(120%);
+      -webkit-backdrop-filter: blur(20px) saturate(120%);
       border: 1px solid var(--glass-border);
-      border-radius: 28px; 
-      padding: 24px;
-      /* Shadow luar untuk efek timbul */
-      box-shadow: 10px 10px 20px var(--shadow-dark), 
-                 -10px -10px 20px var(--shadow-light);
+      border-radius: 32px; /* Lebih membulat ala Clay */
+      padding: 20px; /* Padding dikurangi */
+      
+      /* Efek 3D Clay Container */
+      box-shadow: 
+        12px 12px 24px var(--shadow-dark), 
+       -12px -12px 24px var(--shadow-light),
+       inset 2px 2px 4px var(--clay-glow);
       position: relative;
       isolation: isolate; 
     } 
@@ -73,22 +77,22 @@
       text-align: center;
       font-weight: 700;
       margin-top: 0;
-      margin-bottom: 20px;
-      font-size: 24px;
+      margin-bottom: 16px; /* Dikurangi */
+      font-size: 22px; /* Dikecilkan dikit */
       color: var(--text-main);
       letter-spacing: -0.5px;
     } 
 
     .tab-container {
       display: flex;
-      background: rgba(0, 0, 0, 0.15);
-      border-radius: 14px;
-      margin-bottom: 24px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 16px;
+      margin-bottom: 18px; /* Dikurangi */
       padding: 4px;
       overflow-x: auto;
-      /* Efek cekung (inset) */
-      box-shadow: inset 3px 3px 6px var(--shadow-dark),
-                  inset -3px -3px 6px var(--shadow-light);
+      box-shadow: 
+        inset 3px 3px 6px var(--shadow-dark),
+        inset -3px -3px 6px var(--shadow-light);
     }
 
     .tab-btn {
@@ -96,8 +100,8 @@
       background: transparent;
       color: var(--text-secondary);
       margin-top: 0;
-      padding: 10px 8px;
-      border-radius: 10px;
+      padding: 10px 6px;
+      border-radius: 12px;
       font-size: 13px;
       font-weight: 500;
       box-shadow: none;
@@ -111,9 +115,11 @@
       background: var(--bg-color);
       color: var(--ios-blue);
       font-weight: 600;
-      /* Efek cembung saat tab aktif */
-      box-shadow: 3px 3px 6px var(--shadow-dark), 
-                 -3px -3px 6px var(--shadow-light);
+      /* Tombol tab efek clay */
+      box-shadow: 
+        3px 3px 6px var(--shadow-dark), 
+       -3px -3px 6px var(--shadow-light),
+       inset 1px 1px 2px var(--clay-glow);
     }
 
     .view-section {
@@ -126,15 +132,15 @@
     }
 
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 14px; /* Dibikin lebih rapat */
     } 
 
     label {
       display: block;
-      font-size: 13px;
+      font-size: 12px; /* Dikecilkan */
       font-weight: 600;
       color: var(--text-secondary);
-      margin-bottom: 8px;
+      margin-bottom: 6px; /* Dibikin lebih rapat */
       margin-left: 6px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -142,102 +148,111 @@
 
     input {
       width: 100%;
-      padding: 16px;
-      background: rgba(0, 0, 0, 0.1);
+      padding: 12px 16px; /* Lebih pipih */
+      background: rgba(0, 0, 0, 0.15);
       color: var(--text-main);
       border: 1px solid transparent;
-      border-radius: 14px;
-      font-size: 17px; 
+      border-radius: 16px;
+      font-size: 16px; 
       outline: none;
       transition: all 0.2s;
-      /* Efek cekung (inset) untuk input */
-      box-shadow: inset 4px 4px 8px var(--shadow-dark), 
-                  inset -4px -4px 8px var(--shadow-light);
+      /* Inner shadow Neumorphism */
+      box-shadow: 
+        inset 4px 4px 8px var(--shadow-dark), 
+        inset -3px -3px 8px var(--shadow-light),
+        1px 1px 2px rgba(255,255,255,0.02); /* Glow tipis di luar */
     } 
 
     input:focus {
-      border-color: rgba(59, 130, 246, 0.5);
-      background: rgba(0, 0, 0, 0.2);
+      border-color: rgba(59, 130, 246, 0.4);
+      background: rgba(0, 0, 0, 0.25);
     } 
 
     button.action-btn {
       -webkit-appearance: none;
       appearance: none;
       width: 100%;
-      padding: 16px;
-      margin-top: 10px;
+      padding: 14px; /* Lebih pipih */
+      margin-top: 6px;
       background-color: var(--bg-color);
       color: var(--ios-blue);
       border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      font-size: 17px;
+      border-radius: 18px; /* Lebih membulat */
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s;
-      /* Efek cembung dominan untuk tombol */
-      box-shadow: 6px 6px 12px var(--shadow-dark), 
-                 -6px -6px 12px var(--shadow-light);
+      /* Claymorphism Pop 3D */
+      box-shadow: 
+        5px 5px 12px var(--shadow-dark), 
+       -5px -5px 12px var(--shadow-light),
+       inset 2px 2px 4px var(--clay-glow),
+       inset -2px -2px 4px var(--clay-inner);
     } 
 
     button.action-btn:active {
-      /* Berubah jadi cekung saat ditekan */
-      box-shadow: inset 4px 4px 8px var(--shadow-dark), 
-                  inset -4px -4px 8px var(--shadow-light);
-      transform: scale(0.98);
+      /* Ditekan masuk ke dalam */
+      box-shadow: 
+        inset 4px 4px 8px var(--shadow-dark), 
+        inset -4px -4px 8px var(--shadow-light);
+      transform: scale(0.97);
       color: var(--ios-blue);
     } 
 
     .result {
-      margin-top: 28px;
-      padding: 20px;
+      margin-top: 18px; /* Rapat */
+      padding: 16px; /* Rapat */
       background: rgba(0, 0, 0, 0.15);
-      border-radius: 18px;
+      border-radius: 20px;
       border: 1px solid var(--glass-border);
       display: none; 
-      /* Cekungan lembut untuk box hasil */
-      box-shadow: inset 2px 2px 5px var(--shadow-dark), 
-                  inset -2px -2px 5px var(--shadow-light);
+      /* Cekungan lembut */
+      box-shadow: 
+        inset 3px 3px 6px var(--shadow-dark), 
+        inset -3px -3px 6px var(--shadow-light);
     } 
 
     .result-item {
       display: flex;
       flex-direction: column;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding-bottom: 14px;
-      margin-bottom: 14px;
+      padding-bottom: 10px; /* Rapat */
+      margin-bottom: 10px; /* Rapat */
     } 
 
     .result-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text-secondary);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     } 
 
     .result-persen {
       font-weight: 600;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.25);
       padding: 2px 8px;
-      border-radius: 6px;
+      border-radius: 8px;
       color: var(--text-main);
-      box-shadow: inset 1px 1px 3px var(--shadow-dark),
-                  inset -1px -1px 3px var(--shadow-light);
+      font-size: 12px;
+      box-shadow: 
+        inset 1px 1px 3px var(--shadow-dark),
+        inset -1px -1px 3px rgba(255,255,255,0.03);
     } 
 
     .result-value {
       font-weight: 700;
-      font-size: 20px;
+      font-size: 18px; /* Disesuaikan */
     } 
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
     
     .animate-show {
-      animation: fadeIn 0.4s ease-out forwards;
+      animation: fadeIn 0.3s ease-out forwards;
     }
   </style>
 </head>
